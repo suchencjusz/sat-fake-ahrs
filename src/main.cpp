@@ -101,6 +101,7 @@ void setup()
 void loop()
 {
   get_data();
+  delay(1000/60);
 
   // bajer do resetowania esp jakby cos walnelo (padnie polaczenie z imu przez te smieszne kable)
   if (Serial.available() > 0)
