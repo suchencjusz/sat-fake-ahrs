@@ -45,7 +45,7 @@ void get_data()
   imu.read();
   mag.read();
 
-  snprintf(report, sizeof(report), "%6d %6d %6d %6d %6d %6d %6d %6d %6d",
+  snprintf(report, sizeof(report), "%6d,%6d,%6d,%6d,%6d,%6d,%6d,%6d,%6d",
            imu.a.x, imu.a.y, imu.a.z,
            imu.g.x, imu.g.y, imu.g.z,
            mag.m.x, mag.m.y, mag.m.z);
