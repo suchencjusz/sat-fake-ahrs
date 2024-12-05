@@ -6,6 +6,8 @@
 LIS3MDL mag;
 LSM6 imu;
 
+char report[256];
+
 // #define DEBUG
 
 #ifdef DEBUG
@@ -43,31 +45,17 @@ void get_data()
   imu.read();
   mag.read();
 
-  Serial.print(imu.g.x);
-  Serial.print(",");
-  Serial.print(imu.g.y);
-  Serial.print(",");
-  Serial.print(imu.g.z);
-  Serial.print(",");
-  Serial.print(imu.a.x);
-  Serial.print(",");
-  Serial.print(imu.a.y);
-  Serial.print(",");
-  Serial.print(imu.a.z);
-  Serial.print(",");
+  snprintf(report, sizeof(report), "%6d %6d %6d %6d %6d %6d %6d %6d %6d",
+           imu.a.x, imu.a.y, imu.a.z,
+           imu.g.x, imu.g.y, imu.g.z,
+           mag.m.x, mag.m.y, mag.m.z);
 
-  Serial.print(mag.m.x);
-  Serial.print(",");
-  Serial.print(mag.m.y);
-  Serial.print(",");
-  Serial.print(mag.m.z);
+  Serial.println(report);
 
 #ifdef DEBUG
   Serial.print(",");
   Serial.print(__data_sent);
 #endif
-
-  Serial.println();
 }
 
 void setup()
@@ -100,19 +88,16 @@ void setup()
 
 void loop()
 {
+
   get_data();
-  delay(1000/60);
+  // if (Serial.available() > 0)
+  // {
+  //   String command = Serial.readStringUntil('\n');
+  //   command.trim();
 
-  // bajer do resetowania esp jakby cos walnelo (padnie polaczenie z imu przez te smieszne kable)
-  if (Serial.available() > 0)
-  {
-    String command = Serial.readStringUntil('\n');
-    command.trim();
-
-    if (command.equalsIgnoreCase("reset"))
-    {
-      Serial.println("Restarting...");
-      ESP.restart();
-    }
-  }
+  //   if (command.equalsIgnoreCase("dupa"))
+  //   {
+  //     get_data();
+  //   }
+  // }
 }
